@@ -12,10 +12,13 @@ object Problem3 {
   }
 
   def int2bin(x: Int): List[Int] ={
-    (unfold(((z: Int) => z == 0), ((z: Int) => z%2), ((z: Int) => z/2))(x)).reverse
+    unfold((z: Int) => z == 0, (z: Int) => z%2, (z: Int) => z/2)(x).reverse
   }
 
-
+  /*def repHalve[A](l: List[A]): List[List[A]] = {
+    val sz = l.size / 2
+    //List(unfold((z: List[A])=>z.size <= sz, )(l), repHalve())
+  }*/
 
   def main(args: Array[String]): Unit ={
     println("The bin of 25 is " + int2bin(25))
