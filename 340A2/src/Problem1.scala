@@ -74,7 +74,7 @@ object Problem1 {
   }
 
   def main(args: Array[String]): Unit ={
-    val deck1 = generateDeck(52)
+    val deck1 = generateDeck(200)
     println(howManyShuffles(outshuffle(deck1), deck1)(outshuffle _) + " shuffles to equality using outshuffle")
     println(howManyShuffles(inshuffle(deck1), deck1)(inshuffle _) + " shuffles to equality using inshuffle")
     println(howManyShuffles(deck1, reverse(deck1))(inshuffle(_)) + " shuffles to reverse using inshuffle")
