@@ -1,4 +1,3 @@
-import javafx.event.EventTarget;
 
 public class MilkshakeController {
 
@@ -10,6 +9,7 @@ public class MilkshakeController {
 
     public void handleSlide(String flavour, double value){
         shake.changeIceCream(flavour, (int)value);
+        System.out.println("Slide!");
     }
 
     public void handleClick(int pos, int count, String topping){
@@ -17,8 +17,9 @@ public class MilkshakeController {
             shake.changeToppings(topping, 5* pos);
         }
         else{
-            shake.changeToppings(topping, 1 * pos);
+            shake.changeToppings(topping,  pos);
         }
+        System.out.println("Click!");
     }
 
 }

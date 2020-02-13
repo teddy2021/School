@@ -6,14 +6,17 @@
  */
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class MilkshakeModel {
     private double price;
     private int toppings;
     private int ice_cream;
     private HashMap<String, Integer> items;
+    private LinkedList<ModelListener> subscribers;
 
     public MilkshakeModel(){
+        subscribers = new LinkedList<>();
         items = new HashMap<>();
         price = 0;
         toppings = 0;
@@ -34,6 +37,7 @@ public class MilkshakeModel {
             items.put(flavour, amount);
         }
         price = ice_cream + (toppings * .5);
+        ModelChanged();
     }
 
     public void changeToppings(String topping, int amount){
@@ -52,8 +56,18 @@ public class MilkshakeModel {
         }
 
         price = ice_cream + (toppings * .5);
+        ModelChanged();
     }
 
 
+    public void addSubscriber(ModelListener m){
+        subscribers.add(m);
+    }
+
+    public void ModelChanged(){
+        for(ModelListener m: subscribers){
+            m.viewNotify();
+        }
+    }
 
 }

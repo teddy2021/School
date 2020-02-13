@@ -3,22 +3,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
-public class IceCreamSelection extends Node {
+public class IceCreamSelection{
     private Label label;
     private Slider slider;
     private VBox box;
 
     public IceCreamSelection(String flavour) {
+        label = new Label(flavour);
+        slider = new Slider();
+        slider.setMax(8);
+        slider.setValue(0);
+        slider.setSnapToTicks(true);
         box = new VBox(label, slider);
-        try {
-            label.setText(flavour);
-            slider.setMax(8);
-            slider.setValue(0);
-            slider.setSnapToTicks(true);
-        } catch (Exception E) {
-            System.out.println("Error in IceCreaSelection constructor: " + E);
-            E.printStackTrace();
-        }
     }
 
     public Slider getSlider() {
@@ -27,6 +23,10 @@ public class IceCreamSelection extends Node {
 
     public String getFlavour(){
         return label.getText();
+    }
+
+    public VBox getBox(){
+        return box;
     }
 }
 
