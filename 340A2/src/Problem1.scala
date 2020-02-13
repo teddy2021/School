@@ -10,7 +10,7 @@ object Problem1 {
     else if(l2.size == 0) l1
     else
       l1 match {
-       case Nil => List()
+       case Nil => Nil
        case card::deck => card::Shuffle(l2, deck)
       }
   }
@@ -40,7 +40,7 @@ object Problem1 {
   }
 
   def inshuffle[A](l: List[A]): List[A]={
-    val ls = Split(l, (l.size/2))
+    val ls = Split(l, l.size/2)
     Shuffle(ls(1), ls(0))
   }
 
@@ -74,7 +74,7 @@ object Problem1 {
   }
 
   def main(args: Array[String]): Unit ={
-    val deck1 = generateDeck(200)
+    val deck1 = generateDeck(52)
     println(howManyShuffles(outshuffle(deck1), deck1)(outshuffle _) + " shuffles to equality using outshuffle")
     println(howManyShuffles(inshuffle(deck1), deck1)(inshuffle _) + " shuffles to equality using inshuffle")
     println(howManyShuffles(deck1, reverse(deck1))(inshuffle(_)) + " shuffles to reverse using inshuffle")

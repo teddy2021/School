@@ -7,7 +7,6 @@
 object Problem3 {
 
   def unfold[A, B](p: A=>Boolean, h: A=>B, t: A=>A)(x: A): List[B] = {
-    println(x)
     if(p(x)) Nil
     else h(x)::unfold(p, h, t)(t(x))
   }

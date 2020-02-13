@@ -1,2 +1,2 @@
-public class PictureView {
+public class PictureView{
 }
