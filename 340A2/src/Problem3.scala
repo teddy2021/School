@@ -25,6 +25,7 @@ object Problem3 {
     val lst = List(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)
     println("lst: " + lst + " with size " + lst.size, " and halfway point " + lst.size/2, " with value " + lst(lst.size/2) )
     println("The repHalve of " + lst + " is " + repHalve(lst))
+    println(int2bin(52))
   }
 
 }

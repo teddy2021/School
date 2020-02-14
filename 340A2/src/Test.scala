@@ -1,17 +1,21 @@
 import scala.util.Random
-import Problem1._;
-import Problem2._;
-import Problem3._;
+import Problem1._
+import Problem2._
+import Problem3._
+
+import scala.annotation.tailrec
 
 
 object Test {
 
-  val max = 50
+  val max = 100
 
-  def generate[A](n: Int, default: List[A]) (f: (Int) => A ): List[A] = {
-    if (n == 0) f(0)::default
-    else generate(n - 1, f(n * Random.nextInt(100))::default)(f)
+  @tailrec
+  def generate[A](n: Int, default: List[A]) (f: Int => A ): List[A] = {
+    if (n == 0) default
+    else generate(n - 1, f(n+(n * Random.nextInt(25)))::default)(f)
   }
+
 
   def getBins(l : List[Int]): List[List[Int]] = l match{
     case Nil => Nil
@@ -24,24 +28,18 @@ object Test {
   }
 
   def main(args: Array[String]): Unit = {
-    Random.nextInt(max)
-    val deck = generate(Random.nextInt(max) + 10, List[Int]())((n) => n+1)
+    val deck = generate(1+Random.nextInt(max), List[Int]())(n => n+1)
     val times = Random.nextInt(max)
     println("List: " + deck + " with size " + deck.size + " and middle element " + deck(deck.size/2))
     println("Split in half: " + Split(deck, deck.size/2))
     println("Slit unevenly: " + Split(deck, deck.size/4))
     println("Inshuffled: " + inshuffle(deck))
     println("Outshuffled: " + outshuffle(deck))
-    println("Inshuffled " + times + " times: " + nshuffle(deck, times)(inshuffle _))
-    println("Outshuffled " + times + " times " + nshuffle(deck, times)(outshuffle _))
-    if(deck.size % 2 == 0) {
-      println(howManyShuffles(deck, reverse(deck))(inshuffle _) + " times to reverse list with inshuffle")
-      println(howManyShuffles(outshuffle(deck), deck)(outshuffle(_)) + " times to return to original order with outshuffle")
-    }
-    else{
-      println(howManyShuffles(deck.slice(0, deck.size - 1), reverse(deck.slice(0, deck.size - 1)))(inshuffle _) + " times to reverse list with inshuffle (adjusted to be even)")
-      println(howManyShuffles(outshuffle(deck.slice(0,deck.size - 1)), deck.slice(0, deck.size - 1))(outshuffle(_)) + " times to return to original order with outshuffle (adjusted to be even)")
-    }
+    println("Inshuffled " + times + " times: " + nshuffle(deck, times)(inshuffle))
+    println("Outshuffled " + times + " times " + nshuffle(deck, times)(outshuffle))
+    println((howManyShuffles(inshuffle(deck), deck)(inshuffle)+1) + " times to return to original order with inshuffle")
+    println((howManyShuffles(outshuffle(deck), deck)(outshuffle)+1) + " times to return to original order with outshuffle")
+
     val tree = generateTree(Random.nextInt(max) + 5)
     val value: Int = Random.nextInt(max)
     println(tree)
