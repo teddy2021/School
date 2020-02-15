@@ -1,5 +1,5 @@
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 
 public class ToppingsView extends Pane implements ModelListener{
 
@@ -38,6 +38,8 @@ public class ToppingsView extends Pane implements ModelListener{
         space.add(w_cream.getBox(), 1, 1);
         space.add(coconut.getBox(), 0, 2);
         space.add(marshmallows.getBox(), 1, 2);
+
+        getChildren().add(space);
     }
 
     public void setShakeModel(MilkshakeModel shake) {

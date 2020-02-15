@@ -54,44 +54,57 @@ public class MilkshakeModel {
     }
 
     public void changeIceCream(String flavour, int amount){
-        if(!ic.containsKey(flavour)){
-           ic.put(flavour, 0);
-        }
         int count = ic.get(flavour);
-        if(ice_cream + count + amount <= 8 && ice_cream + count + amount >= 0){
-            ic.replace(flavour, count + amount);
+        int result = count - amount;
+        if(result > 0) { // positive difference -> amount < count
+            if (ice_cream - result >= 0){ // ice cream will not become a negative amount by the difference
+                ic.replace(flavour, amount);
+            }
+            else{ // ice cream will become negative by the difference
+                ic.replace(flavour, 0);
+            }
         }
-        else if(ice_cream + count + amount < 0){
-            ic.replace(flavour, 0);
+        else{ // negative difference -> amount > count
+            int val = Math.abs(result);
+            if(ice_cream + val <= 8){ // ice cream will be within bounds for the new amount
+                ic.replace(flavour, amount);
+            }
+            else{ //
+                ic.replace(flavour, count + (ice_cream - amount));
+            }
         }
-        else if(ice_cream + count + amount > 8){
-                ic.replace(flavour, ice_cream - amount);
-        }
-        System.out.println("b: " + ice_cream);
+
         sumFlavours();
-        System.out.println("a: " + ice_cream);
-        price = (double)ice_cream + ((double)toppings/2);
+        price = (double) ice_cream + ((double) toppings / 2);
         ModelChanged();
-        }
+    }
 
 
     public void changeToppings(String topping, int amount){
-        if(!tp.containsKey(topping)){
-            tp.put(topping, 0);
-        }
         int count = tp.get(topping);
+        int result = count - amount;
+        if(result > 0) { // positive difference -> amount < count
 
-        if(toppings + count + amount <= 8 && toppings + count + amount >= 0){
-            tp.replace(topping, amount);
-        }
-        else if(ice_cream + count + amount < 0){
+            if (toppings - result >= 0){ // ice cream will not become a negative amount by the difference
+                tp.replace(topping, amount);
+            }
+            else{ // ice cream will become negative by the difference
                 tp.replace(topping, 0);
+            }
         }
-        else if(ice_cream + count + amount > 0){
-                tp.replace(topping, toppings + amount);
+        else{ // negative difference -> amount > count
+
+            int val = Math.abs(result);
+            if(toppings + val <= 8){ // ice cream will be within bounds for the new amount
+                tp.replace(topping, amount);
+            }
+            else{ //
+                tp.replace(topping, count + (toppings - amount));
+            }
         }
+
         sumToppings();
-        price = (double)ice_cream + ((double)toppings/2);
+        price = (double) ice_cream + ((double) toppings / 2);
         ModelChanged();
     }
 
@@ -120,6 +133,18 @@ public class MilkshakeModel {
 
     public int getIceCream(){
         return ice_cream;
+    }
+
+    public void reset(){
+        ice_cream = 0;
+        toppings = 0;
+        for(String item: ic.keySet()){
+            ic.replace(item, 0);
+        }
+        for(String item: tp.keySet()){
+            tp.replace(item, 0);
+        }
+        ModelChanged();
     }
 
 }

@@ -51,6 +51,8 @@ public class IceCreamView extends Pane implements ModelListener{
 
         model.addSubscriber(this);
 
+        getChildren().add(space);
+
     }
 
     public void setController(MilkshakeController control){
@@ -63,8 +65,15 @@ public class IceCreamView extends Pane implements ModelListener{
 
     public void viewNotify(){
         HashMap<String, Integer> flavours = model.getFlavours();
+        int totalic = model.getIceCream();
         for(IceCreamSelection ic: items){
-            ic.getSlider().adjustValue(flavours.get(ic.getFlavour()));
+            int amount = flavours.get(ic.getFlavour());
+            if(amount > 0 && (totalic <= 8 || totalic >= 0)) {
+                ic.getSlider().setValue(amount);
+            }
+            else{
+                ic.getSlider().setValue(0);
+            }
         }
     }
 

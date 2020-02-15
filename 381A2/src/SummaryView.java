@@ -1,10 +1,11 @@
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
-public class SummaryView implements ModelListener{
+
+public class SummaryView extends Pane implements ModelListener{
 
     private MilkshakeModel model;
     private MilkshakeController ctrl;
@@ -15,6 +16,7 @@ public class SummaryView implements ModelListener{
         model = m;
         ctrl = c;
         model.addSubscriber(this);
+        getChildren().add(display);
         viewNotify();
     }
 

@@ -14,8 +14,10 @@ public class IceCreamSelection{
         slider.setMax(8);
         slider.setValue(0);
         slider.setMajorTickUnit(1);
-        slider.setMinorTickCount(8);
+        slider.setMinorTickCount(0);
+        slider.setSnapToTicks(true);
         slider.setShowTickMarks(true);
+        slider.setShowTickLabels(true);
         box = new VBox(label, slider);
     }
 
