@@ -13,11 +13,12 @@ public class Main extends Application{
         MilkshakeController control = new MilkshakeController();
         control.setShake(model);
 
-        IceCreamView ice_cream = new IceCreamView(control);
+        IceCreamView ice_cream = new IceCreamView(control, model);
         ToppingsView toppings = new ToppingsView(control);
 
+        SummaryView text = new SummaryView(model, control);
         HBox layout = new HBox();
-        layout.getChildren().addAll(ice_cream.getSpace(), toppings.getSpace());
+        layout.getChildren().addAll(ice_cream.getSpace(), text.getDisplay(), toppings.getSpace());
 
         model.addSubscriber(ice_cream);
         model.addSubscriber(toppings);

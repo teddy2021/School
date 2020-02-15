@@ -27,7 +27,16 @@ object Test {
     else Branch(generateTree(n/2), generateTree(n/2), n * Random.nextInt(max))
   }
 
-  def main(args: Array[String]): Unit = {
+  @annotation.tailrec
+  def loop[A](n: Int, f:()=>A): Unit = {
+    if(n >= 0) {
+      println("Iteration " + (11 - n))
+      f()
+      loop(n - 1, f)
+    }
+  }
+
+  def test(): Unit = {
     val deck = generate(1+Random.nextInt(max), List[Int]())(n => n+1)
     val times = Random.nextInt(max)
     println("List: " + deck + " with size " + deck.size + " and middle element " + deck(deck.size/2))
@@ -57,6 +66,15 @@ object Test {
     val bins = getBins(lst)
     println(bins)
 
+  }
+
+  def main(args: Array[String]): Unit ={
+    println("CMPT 340")
+    println("ASSIG 2")
+    println("KODY MANASTYRSKI")
+    println("KOM607")
+    println("11223681")
+    loop(10, test)
   }
 
 }

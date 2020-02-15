@@ -19,7 +19,6 @@ public class MilkshakeController {
         else{
             shake.changeToppings(topping,  pos);
         }
-        System.out.println("Click!");
     }
 
 }

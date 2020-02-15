@@ -8,8 +8,8 @@ public class ToppingsView extends Pane implements ModelListener{
     MilkshakeModel shake;
 
     private void setEvents(ToppingSelection item){
-        item.getAdd().setOnMouseClicked( e->ctrl.handleClick(1,e.getClickCount(), item.getLabel().getText()));
-        item.getAdd().setOnMouseClicked(e-> ctrl.handleClick(-1, e.getClickCount(), item.getLabel().getText()));
+        item.getAdd().setOnMouseClicked( e->ctrl.handleClick(1, e.getClickCount(), item.getLabel().getText()));
+        item.getSubtract().setOnMouseClicked(e->ctrl.handleClick(-1, e.getClickCount(), item.getLabel().getText()));
     }
 
     public ToppingsView(MilkshakeController ctrl){
