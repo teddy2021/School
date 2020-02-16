@@ -74,7 +74,7 @@ public class Main extends Application{
         right.setTop(toppings);
         right.setBottom(exit);
 
-        layout.add(left, 00,0);
+        layout.add(left, 0,0);
         layout.add(center, 1,0);
         layout.add(right, 2,0);
 
@@ -93,12 +93,12 @@ public class Main extends Application{
         s.widthProperty().addListener(e->{
          layout.setHgap(s.getWidth()/10);
          layout.setPrefWidth(s.getWidth());
-         graphics.setWidth(s.getWidth()/4);
+         graphics.resize(s.getWidth()/4, s.getHeight()/2);
         });
 
         s.heightProperty().addListener(e->{
          layout.setPrefWidth(s.getHeight());
-         graphics.setHeight(s.getHeight()/2);
+         graphics.resize(s.getWidth()/4, s.getHeight()/2);
         });
         s.setTitle("Milkshake");
         s.setScene(scene);

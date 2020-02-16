@@ -13,9 +13,8 @@ public class MilkshakeController {
     }
 
     public void handleClick(int pos, int count, String topping){
-        System.out.println("Click");
         if( count > 1){
-            shake.changeToppings(topping, 5 * pos);
+            shake.changeToppings(topping, 2 * pos);
         }
         else{
             shake.changeToppings(topping,  pos);

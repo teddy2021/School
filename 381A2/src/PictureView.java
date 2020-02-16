@@ -5,7 +5,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 
 public class PictureView extends Pane implements ModelListener{
@@ -15,23 +14,31 @@ public class PictureView extends Pane implements ModelListener{
     Canvas display;
     GraphicsContext context;
     HashMap<String, Image> cream_images;
+    HashMap<String, Image> topping_images;
 
     public PictureView(MilkshakeModel m, int width, int height){
         model = m;
         model.addSubscriber(this);
 
         cream_images = new HashMap<>();
-        ClassLoader cl = getClass().getClassLoader();
+        topping_images = new HashMap<>();
         try {
+
             cream_images.put("Vanilla",new Image("file:Images/Vanilla.jpeg"));
             cream_images.put("Chocolate", new Image("file:Images/Chocolate.jpg"));
-            cream_images.put("Strawberry", new Image("file:Images/Stawberry.jpg"));
+            cream_images.put("Strawberry", new Image("file:Images/Strawberry.jpg"));
             cream_images.put("Lemon", new Image("file:Images/Lemon.jpg"));
             cream_images.put("Coffee", new Image("file:Images/Coffee.jpg"));
             cream_images.put("Mint", new Image("file:Images/Mint.jpg"));
+
+            topping_images.put("Cherries", new Image("file:Images/Cherries.jpg"));
+            topping_images.put("Chocolate_chips", new Image("file:Images/Chocolate_chps.jpg"));
+            topping_images.put("Coconut", new Image("file:Images/Coconut.jpg"));
+            topping_images.put("Marshmallows", new Image("file:Images/Marshmallows.jpg"));
+            topping_images.put("Whipped Cream", new Image("file:Images/WhippedCream.jpg"));
+            topping_images.put("Sprinkles", new Image("file:Images/Sprinkles.jpg"));
         }
         catch (Exception e){
-            System.out.println(e);
             e.printStackTrace();
         }
 
@@ -46,42 +53,48 @@ public class PictureView extends Pane implements ModelListener{
     }
 
     public void draw(){
-        double max_flavour_height = 3*height/4;
-        double flavour_sizechange = height/48;
-        double min_flavour_height = 3*height/8;
+        double max_flavour_height = height/4;
+        double min_flavour_height = 7*height/8;
+        double flavour_sizechange = (max_flavour_height - min_flavour_height)/8;
 
-        double min_topping_height = max_flavour_height;
-        double max_topping_height = 7*height/8;
+        double max_topping_height = height/8;
+        double min_topping_height = max_topping_height - (height/10);
 
         double min_draw_width = width/8;
         double max_draw_width = 7*width/8;
 
+        double cup_Width = max_draw_width - min_draw_width;
+        double cup_height = max_topping_height - min_flavour_height;
+
+        double topping_size_change = cup_Width / 8;
+        double topping_height = max_topping_height - min_topping_height;
 
         String[] options = new String[6];
 
+        // clear canvas
         context.clearRect(0,0,width, height);
-        context.setFill(Color.WHITE);
-        context.fillRect(0,0,width, height); // background
+        // fill background
         context.setFill(Color.NAVY);
+        context.fillRect(0,0,width, height); // background
 
+        // setup cup shape
+        context.setFill(Color.WHITE);
+        context.fillRect(min_draw_width, min_flavour_height, cup_Width, cup_height);
 
-        context.fillRect(0,0, min_draw_width, height); // left
-        context.fillRect(max_draw_width, 0, width, height); // right
-        context.fillRect(0, min_flavour_height, width, height); // bottom
-        context.fillRect(0,0, width, max_topping_height); // top
 
         //flavours
         HashMap<String, Integer> flavours = model.getFlavours();
         String flavour;
         options = flavours.keySet().toArray(options);
+
         double used_flavour_draw = min_flavour_height;
+
         context.setFill(Color.RED);
         for(int i = 0; i < flavours.keySet().size(); i += 1){
-            System.out.println("Min height: " + used_flavour_draw);
             flavour = options[i];
             double cheight = flavour_sizechange * flavours.get(flavour);
-            //context.drawImage(cream_images.get(flavour), min_draw_width, min_flavour_height + used_flavour_draw +cheight, max_draw_width, min_flavour_height + cheight);
-            context.fillRect(min_draw_width,  used_flavour_draw + cheight, max_draw_width, used_flavour_draw);
+            context.drawImage(cream_images.get(flavour), min_draw_width, used_flavour_draw, cup_Width, cheight);
+            //context.fillRect(min_draw_width,  used_flavour_draw, recWidth, cheight);
             used_flavour_draw += cheight;
         }
         context.setFill(Color.NAVY);
@@ -90,10 +103,14 @@ public class PictureView extends Pane implements ModelListener{
         HashMap<String, Integer> toppings = model.getToppings();
         String topping;
         options = toppings.keySet().toArray(options);
-        for(int i = 0; i < options.length; i += 1 ){
+        double used_topping_draw = min_draw_width;
+        for(int i = 0; i < options.length; i += 1 ) {
             topping = options[i];
-        }
+            double fwidth = topping_size_change * toppings.get(topping);
+            context.drawImage(topping_images.get(topping), used_topping_draw, max_topping_height, fwidth, topping_height);
+            used_topping_draw += fwidth;
 
+        }
     }
 
     @Override

@@ -1,11 +1,14 @@
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 
+import java.util.LinkedList;
+
 public class ToppingsView extends Pane implements ModelListener{
 
     private MilkshakeController ctrl;
     private GridPane space;
     MilkshakeModel shake;
+    LinkedList<ToppingSelection> items;
 
     private void setEvents(ToppingSelection item){
         item.getAdd().setOnMouseClicked( e->ctrl.handleClick(1, e.getClickCount(), item.getLabel().getText()));
@@ -17,6 +20,7 @@ public class ToppingsView extends Pane implements ModelListener{
         space = new GridPane();
         space.setHgap(16);
         space.setVgap(32);
+        items = new LinkedList<>();
 
         ToppingSelection sprinkles = new ToppingSelection("Sprinkles");
         ToppingSelection cherries = new ToppingSelection("Cherries");
@@ -24,6 +28,13 @@ public class ToppingsView extends Pane implements ModelListener{
         ToppingSelection w_cream = new ToppingSelection("Whipped Cream");
         ToppingSelection coconut = new ToppingSelection("Coconut");
         ToppingSelection marshmallows = new ToppingSelection("Marshmallows");
+
+        items.add(sprinkles);
+        items.add(cherries);
+        items.add(c_chips);
+        items.add(w_cream);
+        items.add(coconut);
+        items.add(marshmallows);
 
         setEvents(sprinkles);
         setEvents(cherries);

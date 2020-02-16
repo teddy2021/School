@@ -82,26 +82,19 @@ public class MilkshakeModel {
 
     public void changeToppings(String topping, int amount){
         int count = tp.get(topping);
-        int result = count - amount;
-        if(result > 0) { // positive difference -> amount < count
 
-            if (toppings - result >= 0){ // ice cream will not become a negative amount by the difference
+            if(amount < 0 && toppings + amount >= 0){
                 tp.replace(topping, amount);
             }
-            else{ // ice cream will become negative by the difference
+            else if(amount > 0 && toppings + amount <= 8){
+                tp.replace(topping, amount);
+            }
+            else if(amount < 0 && toppings + amount < 0){
                 tp.replace(topping, 0);
             }
-        }
-        else{ // negative difference -> amount > count
-
-            int val = Math.abs(result);
-            if(toppings + val <= 8){ // ice cream will be within bounds for the new amount
-                tp.replace(topping, amount);
-            }
-            else{ //
+            else if(amount > 0 && toppings + amount > 8){
                 tp.replace(topping, count + (toppings - amount));
             }
-        }
 
         sumToppings();
         price = (double) ice_cream + ((double) toppings / 2);
