@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class PictureView extends Pane implements ModelListener{
