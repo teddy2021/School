@@ -33,7 +33,7 @@ object Q1 {
 
 
   @tailrec
-  def build[A, B](p: String, group: List[String], default_return: List[String], default: A)(h: String => Option[A])(f: (A, A) => Boolean): List[String] = group match{
+  def build[A](p: String, group: List[String], default_return: List[String], default: A)(h: String => Option[A])(f: (A, A) => Boolean): List[String] = group match{
     case Nil => default_return
     case a::b =>
       val first = h(p).getOrElse(default)
@@ -51,23 +51,44 @@ object Q1 {
   }
 
   def firstCousins(p: String): Option[List[String]] = {
-    val family = royalParent.keySet.toList.filter(s => s != p && !siblings(p).contains(s))
-    val z: List[String] = Nil
-    Some(build(p, family, z, z)(grandparents)((x, y) => x.filter(!y.contains(_)) == Nil).filter(!siblings(p).getOrElse(Nil).contains(_)))
+    Some(
+      royalParent.keySet.toList
+        .filter(grandparents(_).getOrElse(Nil).filter(_ != "Untracked") != Nil) // remove people with untracked grandparents
+        .filter(grandparents(_).getOrElse(Nil).filter(_ != "Untracked") == grandparents(p).getOrElse(Nil).filter(_ != "Untracked")) // remove people who do not share grandparents
+        .filter(parents(p).getOrElse(Nil) != parents(_).getOrElse(Nil))
+    )
   }
 
   def uncles(p: String): Option[List[String]] = {
-    val family = royalParent.keySet.toList.filter(s => s != p)
-    val z: List[String] = Nil
-    Some(List("Dog"))
+    Some(royalParent.keySet.toList // convert keyset to list
+      .filter(royalParent.get(_).getOrElse("","","")._1 == "m") // remove the women
+      .filter(parents(_).map(t => List(t._1, t._2)).getOrElse(Nil).filter(_ != "Untracked") != Nil) // remove the people with untracked grandparents
+      .filter(grandparents(p).getOrElse(Nil).filter(_ != "Untracked") == parents(_).map(t => List(t._1, t._2)).getOrElse(Nil).filter(_ != "Untracked")) // remove the people who do not share a grandparents
+      .filter(!parents(p).map(t => List(t._1, t._2)).getOrElse(Nil).contains(_))) // remove the person's own parent
+  }
 
+  def loop(ppl: List[String]): Unit = ppl match{
+    case a::b => {
+      println("==========", a, "==========")
+      println("The parents of " + a + " are: " + parents(a).getOrElse("Nobody"))
+      println("The grandparents of " + a + " are: " + grandparents(a).getOrElse("Nobody"))
+      println("The siblings of " + a + " are: " + siblings(a).getOrElse("Nobody"))
+      println(a + "'s first cousins are: " + firstCousins(a).getOrElse("Nobody"))
+      println(a + "'s uncles are: " + uncles(a).getOrElse("Nobody"))
+      println()
+      loop(b)
+    }
+    case Nil => println("Done")
   }
 
   def main(args: Array[String]): Unit = {
-    println("The parents of George are: " + parents("George").getOrElse("Nobody"))
-    println("The grandparents of George are: " + grandparents("George").getOrElse("Nobody"))
-    println("The siblings of George are: " + siblings("George").getOrElse("Nobody"))
-    println("George's first cousins are: " + firstCousins("George").getOrElse("Nobody"))
-    println("George's uncles are: " + uncles("George").getOrElse("Nobody"))
-    }
+    val family = royalParent.keySet.toList
+    loop(family)
+    val gps = grandparents("Zara").getOrElse(Nil).filter(_ != "Untracked")
+    val ps = parents("Charles").map(t => List(t._1, t._2)).getOrElse(Nil).filter(_ != "Untracked")
+    println(gps)
+    println(ps)
+    println(gps == ps)
+
+  }
 }
